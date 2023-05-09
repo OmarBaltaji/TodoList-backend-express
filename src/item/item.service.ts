@@ -2,7 +2,7 @@ import { Injectable } from '@nestjs/common';
 import { CreateItemDto, EditItemDto } from './dto';
 import { Item } from './item.schema';
 import { InjectModel } from '@nestjs/mongoose';
-import { Model } from 'mongoose';
+import { Model, Types } from 'mongoose';
 import { List } from 'src/list/list.schema';
 
 @Injectable()
@@ -18,7 +18,7 @@ export class ItemService {
 
     const item = await this.itemModel.create({
       name: dto.name,
-      list: dto.listId,
+      list: new Types.ObjectId(dto.listId),
     });
 
     await this.listModel.findByIdAndUpdate(
@@ -35,7 +35,10 @@ export class ItemService {
 
     if (!item) return `Item with id ${id} does not exist`;
 
-    // delete the related item in List
+    await this.listModel.findByIdAndUpdate(
+      { _id: item.list },
+      { $pull: { items: item._id } },
+    );
 
     return `Item: "${item.name}" deleted successfully`;
   }
