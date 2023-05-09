@@ -3,10 +3,14 @@ import { ListDto } from './dto';
 import { Model } from 'mongoose';
 import { InjectModel } from '@nestjs/mongoose';
 import { List } from './list.schema';
+import { Item } from 'src/item/item.schema';
 
 @Injectable()
 export class ListService {
-  constructor(@InjectModel(List.name) private listModel: Model<List>) {}
+  constructor(
+    @InjectModel(List.name) private listModel: Model<List>,
+    @InjectModel(Item.name) private itemModel: Model<Item>,
+  ) {}
 
   async getLists() {
     const lists = await this.listModel.find().populate('items');
@@ -27,8 +31,7 @@ export class ListService {
 
     if (!list) return `List with id ${id} does not exist`;
 
-    // delete all items related to list
-    // await ItemModel.deleteMany({ list: listId }).exec();
+    await this.itemModel.deleteMany({ list: list._id }).exec();
 
     return `List "${list.title}" deleted successfully`;
   }
