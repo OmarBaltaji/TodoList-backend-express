@@ -1,5 +1,5 @@
 import { Injectable } from '@nestjs/common';
-import { CreateListDto, EditListDto } from './dto';
+import { ListDto } from './dto';
 import { Model } from 'mongoose';
 import { InjectModel } from '@nestjs/mongoose';
 import { List } from './list.schema';
@@ -16,7 +16,7 @@ export class ListService {
     };
   }
 
-  async createList(dto: CreateListDto): Promise<any> {
+  async createList(dto: ListDto): Promise<any> {
     return {
       list: await this.listModel.create({ title: dto.title, items: [] }),
     };
@@ -33,7 +33,7 @@ export class ListService {
     return `List "${list.title}" deleted successfully`;
   }
 
-  async updateList(id: string, dto: EditListDto) {
+  async updateList(id: string, dto: ListDto) {
     const list = await this.listModel
       .findByIdAndUpdate(
         { _id: id },

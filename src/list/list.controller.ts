@@ -8,7 +8,7 @@ import {
   Patch,
 } from '@nestjs/common';
 import { ListService } from './list.service';
-import { CreateListDto, EditListDto } from './dto';
+import { ListDto } from './dto';
 
 @Controller('api/v1/lists')
 export class ListController {
@@ -20,7 +20,7 @@ export class ListController {
   }
 
   @Post()
-  createList(@Body() dto: CreateListDto): Promise<any> {
+  createList(@Body() dto: ListDto): Promise<any> {
     return this.list.createList(dto);
   }
 
@@ -31,7 +31,7 @@ export class ListController {
 
   @Patch(':id')
   // eslint-disable-next-line prettier/prettier
-  updateList(@Param('id') id: string, @Body() dto: EditListDto): Promise<any> {
+  updateList(@Param('id') id: string, @Body() dto: ListDto): Promise<any> {
     return this.list.updateList(id, dto);
   }
 }
