@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, NotFoundException } from '@nestjs/common';
 import { CreateItemDto, EditItemDto } from './dto';
 import { Item } from './item.schema';
 import { InjectModel } from '@nestjs/mongoose';
@@ -14,7 +14,7 @@ export class ItemService {
 
   async createItem(dto: CreateItemDto): Promise<any> {
     if (!(await this.listModel.findById(dto.listId)))
-      return `List with id ${dto.listId} does not exist`;
+      throw new NotFoundException(`List with id ${dto.listId} does not exist`);
 
     const item = await this.itemModel.create({
       name: dto.name,
@@ -33,7 +33,7 @@ export class ItemService {
   async deleteItem(id: string): Promise<any> {
     const item = await this.itemModel.findByIdAndDelete(id);
 
-    if (!item) return `Item with id ${id} does not exist`;
+    if (!item) throw new NotFoundException(`Item with id ${id} does not exist`);
 
     await this.listModel.findByIdAndUpdate(
       { _id: item.list },
@@ -53,7 +53,7 @@ export class ItemService {
       { runValidators: true, new: true },
     );
 
-    if (!item) return `Item with id ${id} does not exist`;
+    if (!item) throw new NotFoundException(`Item with id ${id} does not exist`);
 
     return { item };
   }

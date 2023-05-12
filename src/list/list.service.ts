@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, NotFoundException } from '@nestjs/common';
 import { ListDto } from './dto';
 import { Model } from 'mongoose';
 import { InjectModel } from '@nestjs/mongoose';
@@ -29,7 +29,7 @@ export class ListService {
   async deleteList(id: string): Promise<string> {
     const list = await this.listModel.findOneAndRemove({ _id: id });
 
-    if (!list) return `List with id ${id} does not exist`;
+    if (!list) throw new NotFoundException(`List with id ${id} does not exist`);
 
     await this.itemModel.deleteMany({ list: list._id }).exec();
 
@@ -45,7 +45,7 @@ export class ListService {
       )
       .populate('items');
 
-    if (!list) return `List with id ${id} does not exist`;
+    if (!list) throw new NotFoundException(`List with id ${id} does not exist`);
 
     return { list };
   }
