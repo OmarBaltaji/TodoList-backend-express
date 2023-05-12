@@ -3,6 +3,8 @@ import { ListModule } from './list/list.module';
 import { ConfigModule, ConfigService } from '@nestjs/config';
 import { ItemModule } from './item/item.module';
 import { MongooseModule } from '@nestjs/mongoose';
+import { APP_FILTER } from '@nestjs/core';
+import { CustomExceptionFilter } from './exception-filter/custom-exception.filter';
 
 @Module({
   imports: [
@@ -10,6 +12,12 @@ import { MongooseModule } from '@nestjs/mongoose';
     ListModule,
     ItemModule,
     MongooseModule.forRoot(process.env.ATLAS_URI),
+  ],
+  providers: [
+    {
+      provide: APP_FILTER,
+      useClass: CustomExceptionFilter,
+    },
   ],
 })
 export class AppModule {}
