@@ -1,6 +1,6 @@
 import { Module } from '@nestjs/common';
 import { ListModule } from './list/list.module';
-import { ConfigModule, ConfigService } from '@nestjs/config';
+import { ConfigModule } from '@nestjs/config';
 import { ItemModule } from './item/item.module';
 import { MongooseModule } from '@nestjs/mongoose';
 import { APP_FILTER } from '@nestjs/core';
