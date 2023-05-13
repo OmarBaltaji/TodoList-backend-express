@@ -2,13 +2,16 @@ import { Body, Controller, Delete, Param, Patch, Post } from '@nestjs/common';
 import { ItemService } from './item.service';
 import { CreateItemDto, EditItemDto } from './dto';
 import { Item } from './item.schema';
+import { TransformObjectId } from 'src/decorators';
 
 @Controller('api/v1/items')
 export class ItemController {
   constructor(private item: ItemService) {}
 
   @Post('add')
-  createItem(@Body() dto: CreateItemDto): Promise<Item> {
+  createItem(
+    @Body(new TransformObjectId('listId')) dto: CreateItemDto,
+  ): Promise<Item> {
     return this.item.createItem(dto);
   }
 
