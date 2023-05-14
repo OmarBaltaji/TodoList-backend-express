@@ -1,9 +1,11 @@
+/* eslint-disable prettier/prettier */
 import { Injectable, NotFoundException } from '@nestjs/common';
 import { CreateItemDto, EditItemDto } from './dto';
 import { Item } from './item.schema';
 import { InjectModel } from '@nestjs/mongoose';
 import { Model, Types } from 'mongoose';
 import { List } from 'src/list/list.schema';
+import { ItemResponse } from 'src/types/response.type';
 
 @Injectable()
 export class ItemService {
@@ -12,7 +14,7 @@ export class ItemService {
     @InjectModel(List.name) private listModel: Model<List>,
   ) {}
 
-  async createItem(dto: CreateItemDto): Promise<any> {
+  async createItem(dto: CreateItemDto): Promise<ItemResponse> {
     if (!(await this.listModel.findById(dto.listId)))
       throw new NotFoundException(`List with id ${dto.listId} does not exist`);
 
@@ -30,7 +32,7 @@ export class ItemService {
     return { item };
   }
 
-  async deleteItem(id: string): Promise<any> {
+  async deleteItem(id: string): Promise<string> {
     const item = await this.itemModel.findByIdAndDelete(id);
 
     if (!item) throw new NotFoundException(`Item with id ${id} does not exist`);
@@ -43,7 +45,7 @@ export class ItemService {
     return `Item: "${item.name}" deleted successfully`;
   }
 
-  async updateItem(id: string, dto: EditItemDto): Promise<any> {
+  async updateItem(id: string, dto: EditItemDto): Promise<string | ItemResponse> {
     if (Object.values(dto).length === 0)
       return 'Cannot update item when body is empty';
 
