@@ -12,7 +12,7 @@ export class ListService {
     @InjectModel(Item.name) private itemModel: Model<Item>,
   ) {}
 
-  async getLists() {
+  async getLists(): Promise<any> {
     const lists = await this.listModel.find().populate('items');
     return {
       count: lists.length,
@@ -36,7 +36,7 @@ export class ListService {
     return `List "${list.title}" deleted successfully`;
   }
 
-  async updateList(id: string, dto: ListDto) {
+  async updateList(id: string, dto: ListDto): Promise<any> {
     const list = await this.listModel
       .findByIdAndUpdate(
         { _id: id },
