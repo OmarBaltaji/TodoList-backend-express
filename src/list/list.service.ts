@@ -2,7 +2,7 @@ import { Injectable, NotFoundException } from '@nestjs/common';
 import { ListDto, List, ListResponse, ListsResponse } from './types';
 import { Model } from 'mongoose';
 import { InjectModel } from '@nestjs/mongoose';
-import { Item } from 'src/item/item.schema';
+import { Item } from 'src/item/types';
 
 @Injectable()
 export class ListService {
