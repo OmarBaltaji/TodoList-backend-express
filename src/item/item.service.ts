@@ -1,11 +1,9 @@
 /* eslint-disable prettier/prettier */
 import { Injectable, NotFoundException } from '@nestjs/common';
-import { CreateItemDto, EditItemDto } from './dto';
-import { Item } from './item.schema';
+import { Item, CreateItemDto, EditItemDto, ItemResponse } from './types';
 import { InjectModel } from '@nestjs/mongoose';
 import { Model, Types } from 'mongoose';
-import { List } from 'src/list/list.schema';
-import { ItemResponse } from 'src/types/response.type';
+import { List } from 'src/list/types';
 
 @Injectable()
 export class ItemService {
