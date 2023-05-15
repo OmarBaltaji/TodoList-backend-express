@@ -1,7 +1,7 @@
 import { Module } from '@nestjs/common';
 import { ListController } from './list.controller';
 import { ListService } from './list.service';
-import { List, ListSchema } from './list.schema';
+import { List, ListSchema } from './types';
 import { MongooseModule } from '@nestjs/mongoose';
 import { Item, ItemSchema } from 'src/item/item.schema';
 import { ListResolver } from './list.resolver';
