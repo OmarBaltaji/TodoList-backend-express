@@ -1,4 +1,4 @@
 export * from './list.schema';
-export * from './dto/index';
-export * from './graphql/index';
+export * from './dto';
+export * from './graphql';
 export * from './list-response';
