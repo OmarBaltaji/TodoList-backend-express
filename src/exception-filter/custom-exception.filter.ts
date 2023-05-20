@@ -1,37 +1,31 @@
-import {
-  ExceptionFilter,
-  Catch,
-  ArgumentsHost,
-  HttpStatus,
-} from '@nestjs/common';
-import { Response } from 'express';
+import { Catch, ArgumentsHost, HttpStatus } from '@nestjs/common';
+import { GqlExceptionFilter } from '@nestjs/graphql';
+import { GraphQLError } from 'graphql';
+@Catch()
+export class CustomExceptionFilter implements GqlExceptionFilter {
+  catch(exception: any, host: ArgumentsHost) {
+    let message = 'Something went wrong, please try again later';
+    let status = HttpStatus.INTERNAL_SERVER_ERROR;
 
-// @Catch()
-// export class CustomExceptionFilter implements ExceptionFilter {
-//   catch(exception: any, host: ArgumentsHost) {
-//     let message = 'Something went wrong, please try again later';
-//     let status = HttpStatus.INTERNAL_SERVER_ERROR;
+    if (exception.name === 'NotFoundException') {
+      status = HttpStatus.NOT_FOUND;
+      message = exception.response.message;
+    }
 
-//     const ctx = host.switchToHttp();
-//     const response = ctx.getResponse<Response>();
+    if (exception.name === 'BadRequestException') {
+      message = exception.response.message.join(', ');
+      status = HttpStatus.BAD_REQUEST;
+    }
 
-//     if (exception.name === 'NotFoundException') {
-//       status = HttpStatus.NOT_FOUND;
-//       message = exception.getResponse()['message'];
-//     }
+    if (exception.code && exception.code === 11000) {
+      status = HttpStatus.CONFLICT;
+      message = `Duplicate value entered for ${Object.keys(
+        exception['keyValue'],
+      )} field, please enter another value`;
+    }
 
-//     if (exception.name === 'BadRequestException') {
-//       message = exception.getResponse()['message'].join(', ');
-//       status = HttpStatus.BAD_REQUEST;
-//     }
-
-//     if (exception.code && exception.code === 11000) {
-//       status = HttpStatus.CONFLICT;
-//       message = `Duplicate value entered for ${Object.keys(
-//         exception['keyValue'],
-//       )} field, please enter another value`;
-//     }
-
-//     return response.status(status).json({ message, status });
-//   }
-// }
+    throw new GraphQLError(message, {
+      extensions: { code: status },
+    });
+  }
+}
