@@ -1,9 +1,8 @@
 import { Injectable, NotFoundException } from '@nestjs/common';
-import { ListDto } from './dto';
+import { ListDto, List, ListResponse, ListsResponse } from './types';
 import { Model } from 'mongoose';
 import { InjectModel } from '@nestjs/mongoose';
-import { List } from './list.schema';
-import { Item } from 'src/item/item.schema';
+import { Item } from 'src/item/types';
 
 @Injectable()
 export class ListService {
@@ -12,7 +11,7 @@ export class ListService {
     @InjectModel(Item.name) private itemModel: Model<Item>,
   ) {}
 
-  async getLists() {
+  async getLists(): Promise<ListsResponse> {
     const lists = await this.listModel.find().populate('items');
     return {
       count: lists.length,
@@ -20,7 +19,7 @@ export class ListService {
     };
   }
 
-  async createList(dto: ListDto): Promise<any> {
+  async createList(dto: ListDto): Promise<ListResponse> {
     return {
       list: await this.listModel.create({ title: dto.title, items: [] }),
     };
@@ -36,7 +35,7 @@ export class ListService {
     return `List "${list.title}" deleted successfully`;
   }
 
-  async updateList(id: string, dto: ListDto) {
+  async updateList(id: string, dto: ListDto): Promise<ListResponse> {
     const list = await this.listModel
       .findByIdAndUpdate(
         { _id: id },

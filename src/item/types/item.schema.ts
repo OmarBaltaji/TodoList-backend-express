@@ -1,7 +1,7 @@
 /* eslint-disable prettier/prettier */
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
 import { HydratedDocument, Types } from 'mongoose';
-import { List } from 'src/list/list.schema';
+import { List } from 'src/list/types/list.schema';
 
 export type ItemDocument = HydratedDocument<Item>;
 

@@ -2,8 +2,9 @@ import { Module } from '@nestjs/common';
 import { ItemService } from './item.service';
 import { ItemController } from './item.controller';
 import { MongooseModule } from '@nestjs/mongoose';
-import { Item, ItemSchema } from './item.schema';
-import { List, ListSchema } from 'src/list/list.schema';
+import { Item, ItemSchema } from './types';
+import { List, ListSchema } from 'src/list/types';
+import { ItemResolver } from './item.resolver';
 
 @Module({
   imports: [
@@ -11,7 +12,7 @@ import { List, ListSchema } from 'src/list/list.schema';
     MongooseModule.forFeature([{ name: List.name, schema: ListSchema }]),
   ],
   controllers: [ItemController],
-  providers: [ItemService],
+  providers: [ItemService, ItemResolver],
   exports: [
     MongooseModule.forFeature([{ name: Item.name, schema: ItemSchema }]),
   ],
