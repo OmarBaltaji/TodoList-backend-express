@@ -4,7 +4,7 @@ import { ConfigService } from '@nestjs/config';
 import { JwtService } from '@nestjs/jwt';
 import { InjectModel } from '@nestjs/mongoose';
 import { Model } from 'mongoose';
-import { User } from 'src/user/user.schema';
+import { User } from 'src/user/types';
 import * as argon from 'argon2';
 import { ObjectId } from 'mongodb';
 
