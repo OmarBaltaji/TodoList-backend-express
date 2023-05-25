@@ -7,6 +7,8 @@ import { APP_FILTER } from '@nestjs/core';
 import { CustomExceptionFilter } from './exception-filter/custom-exception.filter';
 import { GraphQLModule } from '@nestjs/graphql';
 import { ApolloDriver, ApolloDriverConfig } from '@nestjs/apollo';
+import { AuthModule } from './auth/auth.module';
+import { UserModule } from './user/user.module';
 
 @Module({
   imports: [
@@ -19,6 +21,8 @@ import { ApolloDriver, ApolloDriverConfig } from '@nestjs/apollo';
       autoSchemaFile: true,
       sortSchema: true,
     }),
+    AuthModule,
+    UserModule,
   ],
   providers: [
     {
