@@ -6,7 +6,10 @@ import {
   ListResponseType,
 } from './types';
 import { ListService } from './list.service';
+import { UseGuards } from '@nestjs/common';
+import { JwtGuard } from 'src/auth/guard/jwt.guard';
 
+@UseGuards(JwtGuard)
 @Resolver((of) => ListType)
 export class ListResolver {
   constructor(private listService: ListService) {}
