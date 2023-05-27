@@ -26,4 +26,10 @@ export class AuthResolver {
 
     return { result: true };
   }
+
+  @Mutation((returns) => AuthResponseType)
+  logout(@ResponseCookie() res: Response) {
+    res.clearCookie('access_token');
+    return { result: true };
+  }
 }
