@@ -16,17 +16,17 @@ export class AuthService {
     @InjectModel(User.name) private userModel: Model<User>,
   ) {}
 
-  async register(dto: RegisterAuthDto) {
+  async register(dto: RegisterAuthDto): Promise<{ result: boolean }> {
     const password = await argon.hash(dto.password);
 
     try {
-      const user = await this.userModel.create({
+      await this.userModel.create({
         email: dto.email,
         password: password,
         fullName: dto.fullName,
       });
 
-      return this.signToken(user._id, user.email);
+      return { result: true };
     } catch (error) {
       if (error.code === 'P2002') {
         throw new ForbiddenException('Credentials taken');
@@ -36,7 +36,7 @@ export class AuthService {
     }
   }
 
-  async login(dto: LoginAuthDto) {
+  async login(dto: LoginAuthDto): Promise<{ access_token: string }> {
     const user = await this.userModel.findOne({ email: dto.email });
 
     if (!user) {
