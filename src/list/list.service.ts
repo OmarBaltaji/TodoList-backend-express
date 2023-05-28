@@ -3,6 +3,7 @@ import { ListDto, List, ListResponse, ListsResponse } from './types';
 import { Model } from 'mongoose';
 import { InjectModel } from '@nestjs/mongoose';
 import { Item } from 'src/item/types';
+import { ObjectId } from 'mongodb';
 
 @Injectable()
 export class ListService {
@@ -11,22 +12,29 @@ export class ListService {
     @InjectModel(Item.name) private itemModel: Model<Item>,
   ) {}
 
-  async getLists(): Promise<ListsResponse> {
-    const lists = await this.listModel.find().populate('items');
+  async getLists(userId: ObjectId): Promise<ListsResponse> {
+    const lists = await this.listModel.find({ user: userId }).populate('items');
     return {
       count: lists.length,
       lists,
     };
   }
 
-  async createList(dto: ListDto): Promise<ListResponse> {
+  async createList(dto: ListDto, userId: ObjectId): Promise<ListResponse> {
     return {
-      list: await this.listModel.create({ title: dto.title, items: [] }),
+      list: await this.listModel.create({
+        title: dto.title,
+        items: [],
+        user: userId,
+      }),
     };
   }
 
-  async deleteList(id: string): Promise<string> {
-    const list = await this.listModel.findOneAndRemove({ _id: id });
+  async deleteList(id: string, userId: ObjectId): Promise<string> {
+    const list = await this.listModel.findOneAndRemove({
+      _id: id,
+      user: userId,
+    });
 
     if (!list) throw new NotFoundException(`List with id ${id} does not exist`);
 
@@ -35,10 +43,14 @@ export class ListService {
     return `List "${list.title}" deleted successfully`;
   }
 
-  async updateList(id: string, dto: ListDto): Promise<ListResponse> {
+  async updateList(
+    id: string,
+    dto: ListDto,
+    userId: ObjectId,
+  ): Promise<ListResponse> {
     const list = await this.listModel
-      .findByIdAndUpdate(
-        { _id: id },
+      .findOneAndUpdate(
+        { _id: id, user: userId },
         { title: dto.title },
         { runValidators: true, new: true },
       )

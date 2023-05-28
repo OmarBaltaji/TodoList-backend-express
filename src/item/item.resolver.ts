@@ -6,7 +6,10 @@ import {
   ItemType,
   ItemResponseType,
 } from './types';
+import { UseGuards } from '@nestjs/common';
+import { JwtGuard } from 'src/auth/guard/jwt.guard';
 
+@UseGuards(JwtGuard)
 @Resolver((of) => ItemType)
 export class ItemResolver {
   constructor(private itemService: ItemService) {}

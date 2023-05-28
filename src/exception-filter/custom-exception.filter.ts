@@ -4,8 +4,10 @@ import { GraphQLError } from 'graphql';
 @Catch()
 export class CustomExceptionFilter implements GqlExceptionFilter {
   catch(exception: any, host: ArgumentsHost) {
-    let message = 'Something went wrong, please try again later';
-    let status = HttpStatus.INTERNAL_SERVER_ERROR;
+    let message =
+      exception.message || 'Something went wrong, please try again later';
+    let status =
+      exception.code || exception.status || HttpStatus.INTERNAL_SERVER_ERROR;
 
     if (exception.name === 'NotFoundException') {
       status = HttpStatus.NOT_FOUND;
