@@ -13,5 +13,6 @@ async function bootstrap() {
   app.useGlobalPipes(new ValidationPipe({ whitelist: true }));
   app.use(cookieParser());
   await app.listen(process.env.PORT || 5000);
+  console.log(process.env.NODE_ENV);
 }
 bootstrap();
