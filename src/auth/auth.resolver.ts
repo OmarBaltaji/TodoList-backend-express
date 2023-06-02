@@ -22,7 +22,7 @@ export class AuthResolver {
       httpOnly: true,
       secure: environment === 'production' ? true : false,
       // eslint-disable-next-line prettier/prettier
-      domain: environment === 'production' ? 'omar-todolist.netlify.app' : 'localhost',
+      domain: environment === 'production' ? '.netlify.app' : 'localhost',
       sameSite: environment === 'production' ? 'none' : 'lax',
       expires: new Date(Date.now() + 24 * 60 * 60 * 1000),
     });
