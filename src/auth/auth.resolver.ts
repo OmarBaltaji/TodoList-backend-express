@@ -17,10 +17,12 @@ export class AuthResolver {
   @Mutation((returns) => AuthResponseType)
   async login(@Args('dto') dto: LoginAuthDto, @ResponseCookie() res: Response) {
     const { access_token } = await this.authService.login(dto);
+    const environment = process.env.NODE_ENV || 'development';
     res.cookie('access_token', access_token, {
       httpOnly: true,
-      secure: false,
-      sameSite: 'lax',
+      secure: environment === 'production' ? true : false,
+      domain: process.env.URI_ORIGIN,
+      sameSite: environment === 'production' ? 'none' : 'lax',
       expires: new Date(Date.now() + 24 * 60 * 60 * 1000),
     });
 
