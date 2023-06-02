@@ -21,7 +21,7 @@ export class AuthResolver {
     res.cookie('access_token', access_token, {
       httpOnly: true,
       secure: environment === 'production' ? true : false,
-      domain: environment === 'production' ? '.onrender.com' : 'localhost',
+      domain: environment === 'production' ? 'todolist-frontend-9s0w.onrender.com' : 'localhost',
       sameSite: environment === 'production' ? 'none' : 'lax',
       expires: new Date(Date.now() + 24 * 60 * 60 * 1000),
       path: '/',
