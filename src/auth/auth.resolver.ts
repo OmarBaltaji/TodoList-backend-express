@@ -21,7 +21,8 @@ export class AuthResolver {
     res.cookie('access_token', access_token, {
       httpOnly: true,
       secure: environment === 'production' ? true : false,
-      domain: process.env.URI_ORIGIN,
+      // eslint-disable-next-line prettier/prettier
+      domain: environment === 'production' ? 'omar-todolist.netlify.app' : 'localhost',
       sameSite: environment === 'production' ? 'none' : 'lax',
       expires: new Date(Date.now() + 24 * 60 * 60 * 1000),
     });
