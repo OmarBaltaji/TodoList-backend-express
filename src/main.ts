@@ -12,7 +12,6 @@ async function bootstrap() {
   });
   app.useGlobalPipes(new ValidationPipe({ whitelist: true }));
   app.use(cookieParser());
-  console.log(process.env.PORT);
   await app.listen(process.env.PORT || 5000);
 }
 bootstrap();
