@@ -25,6 +25,7 @@ export class AuthResolver {
       domain: environment === 'production' ? '.netlify.app' : 'localhost',
       sameSite: environment === 'production' ? 'none' : 'lax',
       expires: new Date(Date.now() + 24 * 60 * 60 * 1000),
+      path: '/',
     });
 
     return { result: true };
