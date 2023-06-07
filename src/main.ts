@@ -8,7 +8,6 @@ async function bootstrap() {
   app.enableCors({
     origin: process.env.URI_ORIGIN,
     allowedHeaders: ['Content-Type', 'Authorization'],
-    credentials: true,
   });
   app.useGlobalPipes(new ValidationPipe({ whitelist: true }));
   app.use(cookieParser());
