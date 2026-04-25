@@ -1,4 +1,4 @@
-FROM node:16.13.0
+FROM node:18-alpine
 
 WORKDIR /var/www/html/todolist-backend-express
 
@@ -11,4 +11,5 @@ COPY . .
 EXPOSE 5000
 
 RUN npm run build
-RUN npm run start:prod
+
+CMD [ "node", "dist/main.js" ]
